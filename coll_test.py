@@ -1,1 +1,0 @@
-# testing the collision function in pygameß
