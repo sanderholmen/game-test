@@ -31,6 +31,13 @@ p2_points = 0
 x_speed = -3
 y_speed = -3
 
+gameOn = False
+
+def game_running():
+    global gameOn
+
+
+
 def bounce_ball():
     global screen_top, screen_bottom, y_speed, x_speed
 
@@ -67,6 +74,11 @@ while True:
                 p2_speed = -6
             if event.key == pygame.K_s:
                 p2_speed = 6
+            if event.key == pygame.K_SPACE:
+                if gameOn == False:
+                    gameOn = True
+                else:
+                    gameOn = False
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 p1_speed = 0
@@ -81,23 +93,26 @@ while True:
 
     score()
 
-    # add movement to players
-    p1_rect.y += p1_speed
-    p2_rect.y += p2_speed
+    #when game is not paused
+    if gameOn == True:
+        # add movement to players
+        p1_rect.y += p1_speed
+        p2_rect.y += p2_speed
 
-    #checking if players hit borders
-    if p1_rect.y <= 0:
-        p1_rect.y = 0
-    if p1_rect.y >= 600:
-        p1_rect.y = 600
-    if p2_rect.y <= 0:
-        p2_rect.y = 0
-    if p2_rect.y >= 600:
-        p2_rect.y = 600
+        # ball movement
+        game_ball.x += x_speed
+        game_ball.y += y_speed
 
-    # game ball movement
-    game_ball.x += x_speed
-    game_ball.y += y_speed
+        #checking if players hit borders
+        if p1_rect.y <= 0:
+            p1_rect.y = 0
+        if p1_rect.y >= 600:
+            p1_rect.y = 600
+        if p2_rect.y <= 0:
+            p2_rect.y = 0
+        if p2_rect.y >= 600:
+            p2_rect.y = 600
+
 
 
     screen.fill((30, 30, 30))
