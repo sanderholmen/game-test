@@ -27,15 +27,25 @@ screen_bottom = 700
 p1_points = 0
 p2_points = 0
 
+font = pygame.font.Font('freesansbold.ttf', 32)
+
+textX = 800
+textY = 100
+
+def show_score(x, y):
+    p1_score = font.render(str(p1_points), True, (255, 255, 255))
+    screen.blit(p1_score, (x, y))
+    p2_score = font.render(str(p2_points), True, (255, 255, 255))
+    screen.blit(p2_score, (x-600, y))
+
+
 # ball speed
 x_speed = -3
 y_speed = -3
 
-gameOn = False
-
-def game_running():
-    global gameOn
-
+# game state
+running, pause = True, False
+state = pause
 
 
 def bounce_ball():
@@ -48,13 +58,19 @@ def bounce_ball():
         x_speed *= -1
 
 def score():
-    global screen_right, screen_left, y_speed, x_speed, p1_points, p2_points
+    global screen_right, screen_left, y_speed, x_speed, p1_points, p2_points, state
 
     if game_ball.left <= screen_left:
         p1_points += 1
+        state = pause
+        game_ball.x = 500
+        game_ball.y = 350
 
     if game_ball.right >= screen_right:
         p2_points += 1
+        state = pause
+        game_ball.x = 500
+        game_ball.y = 350
 
 
 
@@ -75,10 +91,10 @@ while True:
             if event.key == pygame.K_s:
                 p2_speed = 6
             if event.key == pygame.K_SPACE:
-                if gameOn == False:
-                    gameOn = True
+                if state == pause:
+                    state = running
                 else:
-                    gameOn = False
+                    state = pause
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 p1_speed = 0
@@ -94,7 +110,7 @@ while True:
     score()
 
     #when game is not paused
-    if gameOn == True:
+    if state == running:
         # add movement to players
         p1_rect.y += p1_speed
         p2_rect.y += p2_speed
@@ -113,9 +129,9 @@ while True:
         if p2_rect.y >= 600:
             p2_rect.y = 600
 
-
-
     screen.fill((30, 30, 30))
+
+    show_score(textX, textY)
 
     #draw objects on screen
     pygame.draw.rect(screen, (255, 255, 255), p1_rect)
