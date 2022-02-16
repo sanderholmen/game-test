@@ -35,6 +35,7 @@ textY = 100
 def show_score(x, y):
     p1_score = font.render(str(p1_points), True, (255, 255, 255))
     screen.blit(p1_score, (x, y))
+    
     p2_score = font.render(str(p2_points), True, (255, 255, 255))
     screen.blit(p2_score, (x-600, y))
 
